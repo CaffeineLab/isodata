@@ -1,4 +1,4 @@
-""" Query for a list of all pricing nodes that have ever been referenced
+"""QueryBidNodes - Query for a list of all pricing nodes that have ever been referenced
 by previous bids by the participant. This is a private report.
 
 Note: No really good reason to use lxml other than to just show how it's done.

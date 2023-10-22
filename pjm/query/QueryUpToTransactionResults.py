@@ -1,15 +1,19 @@
-"""Query for a list of all pricing nodes defined in the market"""
+"""QueryUpToTransactionResults - This message is used to query for up to transactions results. This is a private report."""
 import isodata.pjm.constants as C
 
 
 def prepare(token, **kwargs):
     """prepare and return all the components of the requests call."""
 
+    # TODO: implement optional TransactionID="999999.9"
+
     xml = "".join([
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<SOAP-ENV:Envelope SOAP-ENV:encodingStyle="%s" xmlns:SOAP-ENV="%s">' % (C.SOAP_ENCCODING, C.SOAP_ENVELOPE),
         '<SOAP-ENV:Body>',
-        '<QueryRequest xmlns="%s"><QueryBindingLimits day="%s"/></QueryRequest>' % (C.PJM_EMKT_XMLNS, kwargs['market_day']),
+        '<QueryRequest xmlns="%s">' % C.PJM_EMKT_XMLNS,
+        '<QueryUpToTransactionResults day="%s"/>' % kwargs['market_day'],
+        '</QueryRequest>',
         '</SOAP-ENV:Body>',
         '</SOAP-ENV:Envelope>',
     ])
