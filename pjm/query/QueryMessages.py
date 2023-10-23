@@ -28,7 +28,8 @@ def prepare(token, **kwargs):
         active_filter = parser.parse(kwargs['active_date_time'])
     else:
         active_filter = datetime.utcnow()
-    active_filter = active_filter.replace(microsecond=0)
+
+    active_filter = active_filter.replace(microsecond=0).isoformat()
     active_filter = '<ActiveDateTime>%s</ActiveDateTime>' % active_filter
 
     priority_filter = '<PriorityThreshold>%s</PriorityThreshold>' % (

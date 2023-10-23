@@ -8,11 +8,7 @@ from isodata.pjm.helper import gen_xml
 def prepare(token, **kwargs):
     """prepare and return all the components of the requests call."""
 
-    # TODO: Fix error.
-    """<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body><faultcode>Client</faultcode><faultstring>cvc-complex-type.2.1: Element 'QueryRegulationResults' must have no character or element information item [children], because the type's content type is empty.</faultstring></Body></Envelope>"""
-    return None
-
-    xml, content_length = gen_xml(with_filters="<All/>", **kwargs)
+    xml, content_length = gen_xml(with_filters=False, **kwargs)
 
     return {
         'xml': xml,

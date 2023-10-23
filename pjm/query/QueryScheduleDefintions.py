@@ -4,7 +4,6 @@ import isodata.pjm.constants as C
 
 def prepare(token, **kwargs):
     """prepare and return all the components of the requests call."""
-    # TODO: QueryScheduleDefintions not in C.PJM_QUERY_REPORT_LIST
 
     try:
         xml = "".join([

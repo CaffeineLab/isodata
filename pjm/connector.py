@@ -1,5 +1,6 @@
 """PJM Connector and Connection Utilities for ... connecting to PJM :) """
 import json
+import xml.etree.ElementTree as ET
 from datetime import date, datetime
 from importlib import import_module
 import requests
@@ -7,13 +8,37 @@ from dateutil import parser
 from requests.exceptions import SSLError, HTTPError, ReadTimeout
 from loguru import logger
 from isodata.connector import Connector
+import isodata.pjm.constants as C
 # pylint: disable=no-member
+
 
 
 class PJMConnector(Connector):
     required = ['username', 'password', 'certificate']
 
+    @staticmethod
+    def raise_for_fault(report, xmlstr):
+        tree = ET.ElementTree(ET.fromstring(xmlstr))
+        root = tree.getroot()
+        issues = []
+
+        for fault in root.findall('.//{http://emkt.pjm.com/emkt/xml}Text'):
+            logger.error("'%s' Response returned the following error: %s" % (report, fault.text))
+
+        for fault in root.findall('.//{http://schemas.xmlsoap.org/soap/envelope/}faultstring'):
+            logger.error("'%s' Response returned the following client fault: %s" % (report, fault.text))
+
+        return issues if len(issues) > 0 else None
+
     def query(self, **kwargs):
+
+        if 'report' not in kwargs:
+            logger.error('No report to run.')
+            return None
+
+        if kwargs['report'] not in C.PJM_QUERY_REPORT_LIST:
+            logger.error("'%s' Report is not immplemented in %s." % (kwargs['report'], C.PJM_EMKT_XMLNS))
+            return None
 
         # TODO: Clean up market_day validation.  For now - it's working.
         if 'market_day' in kwargs:
@@ -33,8 +58,15 @@ class PJMConnector(Connector):
             else:
                 logger.error("[%s:markety_day] What did you pass in as a market day?" % kwargs['report'])
                 return None
+        else:
+            kwargs['market_day'] = datetime.utcnow()
 
-        package = (import_module('isodata.pjm.query.%s' % kwargs['report']).prepare(token=self.token, **kwargs))
+
+        try:
+            package = (import_module('isodata.pjm.query.%s' % kwargs['report']).prepare(token=self.token, **kwargs))
+        except TypeError as e:
+            logger.error(e)
+            return None
 
         if package is None:
             return None
@@ -44,6 +76,9 @@ class PJMConnector(Connector):
         try:
             response = requests.post(url=package['url'], headers=package['headers'], data=package['xml'], timeout=10)
             response.raise_for_status()
+
+            self.raise_for_fault(kwargs['report'], response.text)
+
             return response.text
         except HTTPError as err:
             logger.error(err)

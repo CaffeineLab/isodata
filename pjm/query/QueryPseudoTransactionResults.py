@@ -6,7 +6,6 @@ from isodata.pjm.helper import gen_xml
 
 def prepare(token, **kwargs):
     """prepare and return all the components of the requests call."""
-    # TODO: QueryPseudoTransactionResults not in C.PJM_QUERY_REPORT_LIST
 
     xml, content_length = gen_xml(with_filters="<All/>", **kwargs)
 
