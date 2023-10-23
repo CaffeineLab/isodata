@@ -1,5 +1,8 @@
 # ISODATA
-This project just helps you get data from the major energy markets.  Currently PJM Public reports are supported.
+This project just helps you get data from the major energy markets.  Currently PJM Public reports are supported.  Also - there is no 'secret-sauce' in here that you cannot glean from market documentation.
+
+## Roadmap
+Future simply entails pulling all documents from all markets and then providing a simple consumer that will convert the response into a dataframe or dictionary for easy loading into backend systems.
 
 ## Credentials
 Your credential should look like this, and if required, your Certificate needs to be supplied just as two file paths would be to a requests post or get.
