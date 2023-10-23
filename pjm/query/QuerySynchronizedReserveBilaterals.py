@@ -1,6 +1,7 @@
 """QuerySynchronizedReserveBilaterals - This message is used to query for the synchronized reserve bilateral schedules that are operative
 for a particular day. The query response returns all synchronized reserve bilaterals for the
 participant who is a party to the bilateral (as a buyer or a seller). This is a private report."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

@@ -3,6 +3,7 @@ for a specific operating day. This is a public report.
 This report is available daily when Day Ahead Market result is available on the day before the
 operating day.
 """
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

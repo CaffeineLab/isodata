@@ -1,5 +1,6 @@
 """QueryRT30MinuteReserveResults - This message is used to query for the RT 30 Minute Reserve Results for the given operating day.
 This is a public report."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

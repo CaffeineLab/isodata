@@ -1,5 +1,6 @@
 """QueryBindingLimits - The binding limits report describes which constraints apply for a particular hour on a specified
 date. Data is available upon day-ahead market close on the day ahead of the operating day. """
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

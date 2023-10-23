@@ -2,6 +2,7 @@
 for a particular day. The query response returns all secondary reserve bilaterals for the
 participant who is a party to the bilateral (as a buyer or a seller). This is a private report.
 """
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

@@ -3,6 +3,7 @@ by previous bids by the participant. This is a private report.
 
 Note: No really good reason to use lxml other than to just show how it can be done.
 """
+# pylint:disable=duplicate-code
 from lxml import etree as ET
 import isodata.pjm.constants as C
 

@@ -1,6 +1,7 @@
 """QueryRegulationBilaterals - This message is used to query for the regulation bilateral schedules that are operative for a
 particular day. The query response returns all bilaterals for the participant who is a party to the
 schedule (as a buyer or a seller). This is a private report.  The bilateral schedules are available at the end of the rebid period for the next day"""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

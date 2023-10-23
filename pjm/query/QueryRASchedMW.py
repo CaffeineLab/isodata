@@ -1,4 +1,5 @@
 """QueryRASchedMW - This message is used to query for the reliability assessment results. This is a public report.  The data is published for each operating day"""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

@@ -2,6 +2,7 @@
 goes over the $1000 threshold limit for the requested day and location or portfolio. If there is no
 price point of the curve that goes above the limit, there will be no data given for that period/hour.
 This is a private report. """
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

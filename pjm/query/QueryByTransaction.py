@@ -1,6 +1,7 @@
 """QueryByTransaction - The response to a successful query by transaction is a message that contains exactly what was
 submitted by the transaction. This includes the entire message, including the SOAP envelope,
 body elements, and <SubmitRequest> content."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 
 

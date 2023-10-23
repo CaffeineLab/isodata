@@ -1,6 +1,7 @@
 """QueryRegulationResults - This message is used to query for the regulation market results showing the market clearing
 prices and cleared regulation MW per hour of a given operating day. This is a public report.
 This report is published and available hourly during the operating day."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

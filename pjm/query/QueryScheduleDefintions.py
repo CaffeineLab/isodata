@@ -1,4 +1,5 @@
 """QueryScheduleDefintions - This message is used to query for schedule definitions. This is a public report."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 
 

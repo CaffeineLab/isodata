@@ -2,6 +2,7 @@
 system demand forecast versus cleared energy by area. The day-ahead summary also includes
 the reserve requirement for each area.
 Data is available when the day-ahead market closes on the day-ahead of the operating day"""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

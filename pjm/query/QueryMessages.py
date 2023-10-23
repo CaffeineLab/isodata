@@ -16,6 +16,7 @@ value is 999, meaning that all
 messages are returned.
 
 """
+# pylint:disable=duplicate-code
 from datetime import datetime
 from dateutil import parser
 import isodata.pjm.constants as C

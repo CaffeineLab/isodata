@@ -1,5 +1,6 @@
 """QuerySolarForecast -  This message is used to query the solar forecast for an identified location for a hours of a given
 day."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 
 

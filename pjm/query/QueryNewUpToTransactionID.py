@@ -1,6 +1,7 @@
 """QueryNewUpToTransactionID - This message is used to query for the next up to transaction id for a participant. This is a private
 report.
 """
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 
 

@@ -1,5 +1,6 @@
 """QueryFuelTypes - This query will return a list of all valid fuel types. This is a public report.
 The Fuel Type list is updated as needed by PJM."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 
 

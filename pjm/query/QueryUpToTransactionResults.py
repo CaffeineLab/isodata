@@ -2,6 +2,7 @@
 
 Optional. The ID of the Up To Transaction to query.
 """
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 
 

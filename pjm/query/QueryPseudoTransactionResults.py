@@ -1,5 +1,6 @@
 """QueryPseudoTransactionResults - This message is used to query for pseudo tie transaction results. This is a private report.
 The data is published for each operating day."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

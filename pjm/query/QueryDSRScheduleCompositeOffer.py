@@ -2,6 +2,7 @@
 This message is used to query for the composite offer associated with the DSR schedules
 belonging to a participant. Only composite offer calculated above $1000 will be shown in this
 query."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

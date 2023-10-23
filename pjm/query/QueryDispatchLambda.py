@@ -1,5 +1,6 @@
 """QueryDispatchLambda - This query is used to obtain the details of the lambda generation for the current day for given
 generators."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

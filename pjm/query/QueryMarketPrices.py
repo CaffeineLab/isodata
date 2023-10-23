@@ -2,6 +2,7 @@
 public report. The report is an hourly report for the requested operating day.
 The market clearing prices are available daily when the Day Ahead Market result is approved on
 the day before the operating day."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 
 

@@ -1,5 +1,6 @@
 """QueryDASynchronizedReserveAward - This message is used to query for the DA Synchronized Reserve Award for requested locations.
 This is a private report."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

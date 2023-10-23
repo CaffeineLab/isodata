@@ -2,6 +2,7 @@
 operative for a particular day. The query response returns all non synchronized reserve bilaterals
 for the participant who is a party to the bilateral (as a buyer or a seller). This is a private report.
 The bilateral schedules are available at the end of the rebid period for the next day."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

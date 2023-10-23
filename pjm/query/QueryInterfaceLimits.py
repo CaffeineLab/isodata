@@ -3,6 +3,7 @@ scheduling process between PJM interfaces and neighboring control areas. This is
 report.
 This report is available daily when the Day Ahead Market result is approved on the day before the
 operating day."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

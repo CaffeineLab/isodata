@@ -6,6 +6,7 @@ day before the operating day.
 Type is one of: Generation, Demand, Virtual, LoadResponse
 
 """
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 
 

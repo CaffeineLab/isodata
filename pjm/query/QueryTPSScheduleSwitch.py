@@ -1,4 +1,5 @@
 """QueryTPSScheduleSwitch - This message is used to query for TPS Schedule Switch information. This is a private report."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 

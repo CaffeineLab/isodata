@@ -1,5 +1,6 @@
 """QueryActiveSubzone -This message is used to query for the latest known active subzone and reserve type to be
 cleared per hour for the given operating day. This is a public report."""
+# pylint:disable=duplicate-code
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
 
