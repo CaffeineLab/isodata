@@ -14,3 +14,14 @@ Your credential should look like this, and your PJM PKI Certificate needs to be 
   }
 }
 ```
+To retrieve data:
+```
+from isodata import Session
+
+pjm = Session('pjm')
+pjm.authorize(username=creds['credentials']['pjm']['username'],
+              password=creds['credentials']['pjm']['password'],
+              certificate=(path_cert, path_key))
+print(pjm.query(report='QueryBindingLimits', market_day="2023-10-19"))
+                  
+```
