@@ -1,7 +1,9 @@
 """PJM Connector and Connection Utilities for ... connecting to PJM :) """
 import json
+from datetime import date, datetime
 from importlib import import_module
 import requests
+from dateutil import parser
 from requests.exceptions import SSLError, HTTPError, ReadTimeout
 from loguru import logger
 from isodata.connector import Connector
@@ -11,9 +13,34 @@ from isodata.connector import Connector
 class PJMConnector(Connector):
     required = ['username', 'password', 'certificate']
 
-    def fetch(self, **kwargs):
-        package = (import_module('isodata.pjm.public.%s' % kwargs['method']).prepare(token=self.token, **kwargs))
+    def query(self, **kwargs):
+
+        # TODO: Clean up market_day validation.  For now - it's working.
+        if 'market_day' in kwargs:
+            if isinstance(kwargs['market_day'], str):
+                try:
+                    kwargs['market_day'] = parser.parse(kwargs['market_day'])
+                except parser.ParserError as err:
+                    logger.error("[%s:markety_day] %s" % (kwargs['report'], err))
+                    return None
+                except TypeError as err:
+                    logger.error("[%s:markety_day] %s" % (kwargs['report'], err))
+                    return None
+            elif isinstance(kwargs['market_day'], datetime):
+                pass
+            elif isinstance(kwargs['market_day'], date):
+                pass
+            else:
+                logger.error("[%s:markety_day] What did you pass in as a market day?" % kwargs['report'])
+                return None
+
+        package = (import_module('isodata.pjm.query.%s' % kwargs['report']).prepare(token=self.token, **kwargs))
+
+        if package is None:
+            return None
+
         response = None
+
         try:
             response = requests.post(url=package['url'], headers=package['headers'], data=package['xml'], timeout=10)
             response.raise_for_status()

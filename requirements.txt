@@ -1,5 +1,6 @@
 beautifulsoup4
 loguru
-requests
 pylint
+python-dateutil
+requests
 zeep
