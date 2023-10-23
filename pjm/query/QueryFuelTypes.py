@@ -10,7 +10,7 @@ def prepare(token, **kwargs):
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<SOAP-ENV:Envelope SOAP-ENV:encodingStyle="%s" xmlns:SOAP-ENV="%s">' % (C.SOAP_ENCCODING, C.SOAP_ENVELOPE),
         '<SOAP-ENV:Body>',
-        '<QueryRequest xmlns="%s"><QueryFuelTypes/></QueryRequest>',
+        '<QueryRequest xmlns="%s"><QueryFuelTypes/></QueryRequest>' % C.PJM_EMKT_XMLNS,
         '</SOAP-ENV:Body>',
         '</SOAP-ENV:Envelope>',
     ])
@@ -20,7 +20,7 @@ def prepare(token, **kwargs):
         'headers': {
             **C.PJM_BASE_HEADERS,
             'Cookie': 'pjmauth=' + token,
-            'Content-length':  content_length
+            'Content-length':  str(len(xml))
         },
         'url': C.PJM_EMKT_URL_QUERY
     }

@@ -3,20 +3,40 @@ submitted by the transaction. This includes the entire message, including the SO
 body elements, and <SubmitRequest> content."""
 import isodata.pjm.constants as C
 from isodata.pjm.helper import gen_xml
-
+from loguru import logger
 
 def prepare(token, **kwargs):
     """prepare and return all the components of the requests call."""
 
-    xml, content_length = gen_xml(with_filters=True, **kwargs)
+    try:
+        xml = "".join([
+            '<?xml version="1.0" encoding="UTF-8"?>',
+            '<SOAP-ENV:Envelope SOAP-ENV:encodingStyle="%s" xmlns:SOAP-ENV="%s">' % (C.SOAP_ENCCODING, C.SOAP_ENVELOPE),
+            '<SOAP-ENV:Body>',
+            '<QueryByTransaction xmlns="%s">' % C.PJM_EMKT_XMLNS,
+            '<TransactionID>',
+            kwargs['transaction_id'],
+            '</TransactionID>',
+            '</QueryByTransaction>',
+            '</SOAP-ENV:Body>',
+            '</SOAP-ENV:Envelope>',
+        ])
+    except KeyError as err:
+        logger.error('[%s] Missing required field: transaction_id for query.' % err)
+        return None
 
     return {
         'xml': xml,
         'headers': {
-            **C.PJM_BASE_HEADERS,
+            'Host': 'marketsgateway.pjm.com',
+            'SOAPAction': '/marketsgateway/xml/query',
+            'Content-type': 'text/xml',
+            'charset': 'UTF-8',
+            'Accept': 'text/xml',
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
             'Cookie': 'pjmauth=' + token,
-            'Content-length':  content_length
+            'Content-length':  str(len(xml))
         },
-        'url': C.PJM_EMKT_URL_TRANSACTION,
-        'method': "post"
+        'url': C.PJM_EMKT_URL_QUERY,
     }

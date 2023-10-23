@@ -3,20 +3,48 @@ public report. The report is an hourly report for the requested operating day.
 The market clearing prices are available daily when the Day Ahead Market result is approved on
 the day before the operating day."""
 import isodata.pjm.constants as C
-from isodata.pjm.helper import gen_xml
-
+from loguru import logger
 
 def prepare(token, **kwargs):
     """prepare and return all the components of the requests call."""
 
-    xml, content_length = gen_xml(with_filters="<All/>", **kwargs)
+    query_filter = ""
+
+
+    if 'location_name' in kwargs:
+        query_filter = '<LocationName>%s</LocationName>' % kwargs['location_name']
+    elif 'portfolio_name' in kwargs:
+        query_filter = '<PortfolioName>%s</PortfolioName>' % kwargs['portfolio_name']
+    elif 'area_name' in kwargs:
+        query_filter = '<AreaName>%s</AreaName>' % kwargs['area_name']
+    else:
+        query_filter = '<All/>'
+
+
+    try:
+        xml = "".join([
+            '<?xml version="1.0" encoding="UTF-8"?>',
+            '<SOAP-ENV:Envelope SOAP-ENV:encodingStyle="%s" xmlns:SOAP-ENV="%s">' % (C.SOAP_ENCCODING, C.SOAP_ENVELOPE),
+            '<SOAP-ENV:Body>',
+            '<QueryRequest xmlns="%s">' % C.PJM_EMKT_XMLNS,
+            '<%s type="%s" day="%s">' % (kwargs['report'], kwargs['type'], kwargs['market_day'].strftime('%Y-%m-%d')),
+            query_filter,
+            '</%s>' % kwargs['report'],
+            '</QueryRequest>',
+            '</SOAP-ENV:Body>',
+            '</SOAP-ENV:Envelope>',
+        ])
+    except KeyError as err:
+        logger.error('[%s] Missing required field: %s for query.' % (kwargs['report'], err))
+        return None
+
 
     return {
         'xml': xml,
         'headers': {
             **C.PJM_BASE_HEADERS,
             'Cookie': 'pjmauth=' + token,
-            'Content-length':  content_length
+            'Content-length':  str(len(xml))
         },
         'url': C.PJM_EMKT_URL_QUERY
     }

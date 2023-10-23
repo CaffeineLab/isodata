@@ -7,6 +7,9 @@ from isodata.pjm.helper import gen_xml
 def prepare(token, **kwargs):
     """prepare and return all the components of the requests call."""
 
+    # TODO: not in list - check query asbilaterals for list.
+    return None
+
     xml, content_length = gen_xml(with_filters="<All/>", **kwargs)
 
     return {
