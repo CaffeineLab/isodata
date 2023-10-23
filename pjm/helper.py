@@ -27,13 +27,21 @@ def gen_xml(with_filters=False, **kwargs):
         if 'hour' in kwargs:
             query_filter += '<Hour>%s</Hour>' % kwargs['hour']
 
+
+    if 'disable_date' in kwargs:
+        request = '<%s>' % kwargs['report']
+    else:
+        request = '<%s day="%s">' % (kwargs['report'], kwargs['market_day'].strftime('%Y-%m-%d'))
+
+
+
     try:
         xml = "".join([
             '<?xml version="1.0" encoding="UTF-8"?>',
             '<SOAP-ENV:Envelope SOAP-ENV:encodingStyle="%s" xmlns:SOAP-ENV="%s">' % (C.SOAP_ENCCODING, C.SOAP_ENVELOPE),
             '<SOAP-ENV:Body>',
             '<QueryRequest xmlns="%s">' % C.PJM_EMKT_XMLNS,
-            '<%s day="%s">' % (kwargs['report'], kwargs['market_day'].strftime('%Y-%m-%d')),
+            request,
             query_filter,
             '</%s>' % kwargs['report'],
             '</QueryRequest>',
