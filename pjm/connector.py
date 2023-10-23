@@ -1,5 +1,4 @@
 """PJM Connector and Connection Utilities for ... connecting to PJM :) """
-# pylint: disable=no-member
 import json
 import xml.etree.ElementTree as ET
 from datetime import date, datetime
@@ -10,6 +9,8 @@ from requests.exceptions import SSLError, HTTPError, ReadTimeout
 from loguru import logger
 from isodata.connector import Connector
 import isodata.pjm.constants as C
+# pylint: disable=no-member
+
 
 
 class PJMConnector(Connector):
@@ -60,6 +61,7 @@ class PJMConnector(Connector):
         else:
             kwargs['market_day'] = datetime.utcnow()
 
+
         try:
             package = (import_module('isodata.pjm.query.%s' % kwargs['report']).prepare(token=self.token, **kwargs))
         except TypeError as e:
@@ -93,6 +95,8 @@ class PJMConnector(Connector):
             if len(package['xml']) < 100:
                 logger.warning("Check content of XML in package.  Seems light.")
         return None
+
+
 
     def get_token(self):
         """Get the tokenId from the PJM Authentication service"""
