@@ -21,16 +21,9 @@ def prepare(token, **kwargs):
     return {
         'xml': xml,
         'headers': {
-            'Host': 'marketsgateway.pjm.com',
-            'SOAPAction': '/marketsgateway/xml/query',
-            'Content-type': 'text/xml',
-            'charset': 'UTF-8',
-            'Accept': 'text/xml',
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache',
+            **C.PJM_BASE_HEADERS,
             'Cookie': 'pjmauth=' + token,
             'Content-length':  str(len(xml))
         },
-        'url': C.PJM_EMKT_URL_QUERY,
-        'method': "post"
+        'url': C.PJM_EMKT_URL_QUERY
     }

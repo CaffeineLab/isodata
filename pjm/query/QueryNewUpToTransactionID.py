@@ -11,7 +11,7 @@ def prepare(token, **kwargs):
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<SOAP-ENV:Envelope SOAP-ENV:encodingStyle="%s" xmlns:SOAP-ENV="%s">' % (C.SOAP_ENCCODING, C.SOAP_ENVELOPE),
         '<SOAP-ENV:Body>',
-        '<QueryRequest xmlns="%s"><QueryNewUpToTransactionID/></QueryRequest>'  % C.PJM_EMKT_XMLNS,
+        '<QueryRequest xmlns="%s"><%s/></QueryRequest>' % (C.PJM_EMKT_XMLNS, kwargs['report']),
         '</SOAP-ENV:Body>',
         '</SOAP-ENV:Envelope>',
     ])

@@ -3,13 +3,10 @@ public report. The report is an hourly report for the requested operating day.
 The market clearing prices are available daily when the Day Ahead Market result is approved on
 the day before the operating day."""
 import isodata.pjm.constants as C
-from loguru import logger
+
 
 def prepare(token, **kwargs):
     """prepare and return all the components of the requests call."""
-
-    query_filter = ""
-
 
     if 'location_name' in kwargs:
         query_filter = '<LocationName>%s</LocationName>' % kwargs['location_name']
@@ -35,9 +32,7 @@ def prepare(token, **kwargs):
             '</SOAP-ENV:Envelope>',
         ])
     except KeyError as err:
-        logger.error('[%s] Missing required field: %s for query.' % (kwargs['report'], err))
-        return None
-
+        raise TypeError('[%s] Missing required field: %s for query.' % (kwargs['report'], err)) from err
 
     return {
         'xml': xml,

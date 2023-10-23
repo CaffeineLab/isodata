@@ -2,8 +2,7 @@
 submitted by the transaction. This includes the entire message, including the SOAP envelope,
 body elements, and <SubmitRequest> content."""
 import isodata.pjm.constants as C
-from isodata.pjm.helper import gen_xml
-from loguru import logger
+
 
 def prepare(token, **kwargs):
     """prepare and return all the components of the requests call."""
@@ -22,21 +21,14 @@ def prepare(token, **kwargs):
             '</SOAP-ENV:Envelope>',
         ])
     except KeyError as err:
-        logger.error('[%s] Missing required field: transaction_id for query.' % err)
-        return None
+        raise TypeError('[%s] Missing required field: %s for query.' % (kwargs['report'], err)) from err
 
     return {
         'xml': xml,
         'headers': {
-            'Host': 'marketsgateway.pjm.com',
-            'SOAPAction': '/marketsgateway/xml/query',
-            'Content-type': 'text/xml',
-            'charset': 'UTF-8',
-            'Accept': 'text/xml',
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache',
+            **C.PJM_BASE_HEADERS,
             'Cookie': 'pjmauth=' + token,
             'Content-length':  str(len(xml))
         },
-        'url': C.PJM_EMKT_URL_QUERY,
+        'url': C.PJM_EMKT_URL_QUERY
     }
