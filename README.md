@@ -5,7 +5,9 @@ This project just helps you get data from the major energy markets.  Currently P
 After making this an installable PIP package, the future simply entails pulling all documents from all markets and then providing a simple consumer that will convert the response into a dataframe or dictionary for easy loading into backend systems.
 
 ## Installing
-For now, just clone or download it.  PIP installer is on the short horizon.
+```
+pip install python-isodata
+```
 
 
 
