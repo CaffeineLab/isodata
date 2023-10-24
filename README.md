@@ -1,7 +1,15 @@
 # ISODATA
-This project just helps you get data from the major energy markets.  Currently PJM Public reports are supported.
+This project just helps you get data from the major energy markets.  Currently PJM Public reports are supported.  Also - there is no 'secret-sauce' in here that you cannot glean from market documentation.
 
-##Credentials
+## Roadmap
+After making this an installable PIP package, the future simply entails pulling all documents from all markets and then providing a simple consumer that will convert the response into a dataframe or dictionary for easy loading into backend systems.
+
+## Installing
+For now, just clone or download it.  PIP installer is on the short horizon.
+
+
+
+## Credentials
 Your credential should look like this, and if required, your Certificate needs to be supplied just as two file paths would be to a requests post or get.
 ```
 {
@@ -16,7 +24,7 @@ Your credential should look like this, and if required, your Certificate needs t
   }
 }
 ```
-##Querying
+## Querying
 **market_day** is magical?
 
 If you pass it as a string it will be converted into a datetime and if you forget it
@@ -41,7 +49,7 @@ for fp in Path('./isodata/pjm/query').glob('*.py'):
 
                   
 ```
-##PJM Market Notes
+## PJM Market Notes
 it is on the client to procure appropriate credentials and possible NAESB approved certificate for connecting to the market API(s).
 
 More information can be found on the PJM website:
