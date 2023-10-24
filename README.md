@@ -7,6 +7,10 @@ After making this an installable PIP package, the future simply entails pulling 
 ## Installing
 For now, just clone or download it.  PIP installer is on the short horizon.
 
+```
+pip install python-isodata
+```
+
 ## Credentials
 Your credential should look like this, and if required, your Certificate needs to be supplied just as two file paths would be to a requests post or get.
 ```
