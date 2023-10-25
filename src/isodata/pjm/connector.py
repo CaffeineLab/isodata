@@ -41,7 +41,6 @@ class PJMConnector(Connector):
             logger.error("'%s' Report is not immplemented in %s." % (kwargs['report'], C.PJM_EMKT_XMLNS))
             return None
 
-        # TODO: Clean up market_day validation.  For now - it's working.
         if 'market_day' in kwargs:
             if isinstance(kwargs['market_day'], str):
                 try:
@@ -62,9 +61,8 @@ class PJMConnector(Connector):
         else:
             kwargs['market_day'] = datetime.utcnow()
 
-
         try:
-            module = import_module('..query.%s'  % kwargs['report'], package=__name__)
+            module = import_module('..query.%s' % kwargs['report'], package=__name__)
             package = module.prepare(token=self.token, **kwargs)
         except ModuleNotFoundError as e:
             logger.error(e)
@@ -100,7 +98,6 @@ class PJMConnector(Connector):
             if len(package['xml']) < 100:
                 logger.warning("Check content of XML in package.  Seems light.")
         return None
-
 
 
     def get_token(self):
