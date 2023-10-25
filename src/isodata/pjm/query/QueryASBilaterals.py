@@ -17,7 +17,7 @@ def prepare(token, **kwargs):
             '<SOAP-ENV:Envelope SOAP-ENV:encodingStyle="%s" xmlns:SOAP-ENV="%s">' % (C.SOAP_ENCCODING, C.SOAP_ENVELOPE),
             '<SOAP-ENV:Body>',
             '<QueryRequest xmlns="%s">' % C.PJM_EMKT_XMLNS,
-            '<%s day="%s"/>' % (kwargs['report'], kwargs['market_day'].strftime('%Y-%m-%d')),
+            '<%s day="%s">' % (kwargs['report'], kwargs['market_day'].strftime('%Y-%m-%d')),
             query_filter,
             '</%s>' % kwargs['report'],
             '</QueryRequest>',
