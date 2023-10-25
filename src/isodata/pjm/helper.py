@@ -1,8 +1,16 @@
+"""PJM helper functions for working with the API."""
 from loguru import logger
 from ..pjm import constants as C
 
 
 def gen_xml(with_filters=False, **kwargs):
+    """Generate specific XML documents for querying the API.
+
+    :param with_filters:
+    :param kwargs:
+    :return:
+    """
+
     query_filter = ""
     if with_filters:
 
@@ -27,13 +35,12 @@ def gen_xml(with_filters=False, **kwargs):
         if 'hour' in kwargs:
             query_filter += '<Hour>%s</Hour>' % kwargs['hour']
 
-
-    if 'disable_date' in kwargs:
+    if 'available' in kwargs:
+        request = '<%s day="%s" available="%s">' % (kwargs['report'], kwargs['market_day'].strftime('%Y-%m-%d'), kwargs['available'])
+    elif 'disable_date' in kwargs:
         request = '<%s>' % kwargs['report']
     else:
         request = '<%s day="%s">' % (kwargs['report'], kwargs['market_day'].strftime('%Y-%m-%d'))
-
-
 
     try:
         xml = "".join([
