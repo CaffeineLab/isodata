@@ -4,11 +4,11 @@ This project just helps you get data from the major energy markets.  Currently P
 ## Roadmap
 After making this an installable PIP package, the future simply entails pulling all documents from all markets and then providing a simple consumer that will convert the response into a dataframe or dictionary for easy loading into backend systems.
 
-## Installing
+## Installing And Documentation
 ```
 pip install python-isodata
 ```
-
+https://python-isodata.readthedocs.io/en/latest/
 
 
 ## Credentials
@@ -57,8 +57,11 @@ it is on the client to procure appropriate credentials and possible NAESB approv
 More information can be found on the PJM website:
 
 https://www.pjm.com/markets-and-operations/etools/markets-gateway
+
 https://www.pjm.com/-/media/etools/security/pki-faqs.ashx
+
 https://www.pjm.com/-/media/etools/security/pki-authentication-guide.ashx
+
 https://www.pjm.com/-/media/etools/markets-gateway/external-interface-specification-guide.ashx
 
 While PJM does publish a wsdl (in a word doc) it hasn't been updated since 2016,
