@@ -5,13 +5,29 @@
 
 Welcome to python-isodata's documentation!
 ==========================================
+A Python library to retrieve energy market information from the major US ISOs.
+
+Installation
+------------
+
+.. code-block:: bash
+
+   pip install python-isodata
+
+
+Usage
+-----
+
+.. code-block:: python
+
+   >>> from isodata.sessions import Session
+   >>> pjm = Session('pjm')
+   >>> pjm.authorize((username, password, (cert, key))
+   >>> report = pjm.query(report='QueryPortfolios')
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
-.. rubric:: Modules
-
 .. autosummary::
    :toctree: generated
 
