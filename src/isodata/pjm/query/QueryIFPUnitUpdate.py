@@ -1,10 +1,5 @@
 """QueryIFPUnitUpdate - To query for submitted hourly update data
-<QueryRequest>
- <QueryIFPUnitUpdate day="yyyy-mm-dd">
- <All/>
- <LocationName>zzz</LocationName>
- </QueryIFPUnitUpdate>
-</QueryRequest>
+
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

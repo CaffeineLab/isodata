@@ -1,14 +1,6 @@
 """QuerySynchronizedReserveUpdate - You may query for a particular market day and resource location using the message described
 below.
-To query for submitted update data use the following query request:
-<QueryRequest>
- <QuerySynchronizedReserveUpdate day="yyyy-mm-dd">
- <All/>
- <LocationName>zzz</LocationName>
- <PortfolioName>zzz</PortfolioName>
- </QuerySynchronizedReserveUpdate>
-</QueryRequest>
-
+To query for submitted update data
 
 """
 # pylint:disable=duplicate-code

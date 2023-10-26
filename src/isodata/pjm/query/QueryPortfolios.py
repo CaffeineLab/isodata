@@ -1,12 +1,6 @@
 """QueryPortfolios - This message format is used to query for Portfolios. The query can request all portfolios owned
 by the participant or only those portfolios specifically named.
 
-<QueryRequest>
- <QueryPortfolios>
- <All/>
- <PortfolioName>zzz</PortfolioName>
- </QueryPortfolios>
-</QueryRequest>
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

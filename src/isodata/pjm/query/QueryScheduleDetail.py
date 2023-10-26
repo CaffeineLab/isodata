@@ -1,16 +1,11 @@
-"""QueryScheduleDetail -
-
-
-Two different schedule query requests are provided. You may query for a schedule details by
+"""QueryScheduleDetail - Two different schedule query requests are provided. You may query for a schedule details by
 specifying a particular schedule and generator unit name. The result if a single schedule details
 message that matches the request parameters. Or, you can request all schedules associated
 with a given unit or the units in a specified portfolio. The all qualifier can specify all schedules or
 all of the schedules that are available for a particular market date (day ahead or balancing).
 You may query for a particular market day and generator by location name and specific schedule
 identifier using the message described below.
-<QueryRequest>
- <QueryScheduleDetail location="xxx" schedule="xx" day="yyyy-mm-dd"/>
-</QueryRequest>
+
 
 
 """

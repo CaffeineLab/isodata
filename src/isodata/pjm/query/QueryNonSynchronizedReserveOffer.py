@@ -2,13 +2,6 @@
 below.
 To query for submitted offer data use the following query request:
 
-<QueryRequest>
- <QueryNonSynchronizedReserveOffer day="yyyy-mm-dd">
- <All/>
- <LocationName>zzz</LocationName>
- <PortfolioName>zzz</PortfolioName>
- </QueryNonSynchronizedReserveOffer>
-</QueryRequest>
 
 """
 # pylint:disable=duplicate-code

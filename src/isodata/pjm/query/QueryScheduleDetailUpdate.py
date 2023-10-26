@@ -1,10 +1,4 @@
 """QueryScheduleDetailUpdate - To query the system for schedule detail update
-
-<QueryRequest>
- <QueryScheduleDetailUpdate location="string" schedule="string"
-day="yyyy-mm-dd"/>
-</QueryRequest>
-
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

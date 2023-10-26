@@ -1,14 +1,6 @@
 """QueryUpToTransactions - You may query for a particular Up To Transaction using either a transaction id and market day or
 for a source/sink location(s) and day using the message described below.
-To query for a submitted Up To Transaction data using a Transaction ID use the following query
-request:
-
-
-<QueryRequest>
- <QueryUpToTransactions day="yyyy-mm-dd">
- <TransactionID>999999.9</TransactionID>
- </QueryUpToTransactions>
-</QueryRequest>
+To query for a submitted Up To Transaction data using a Transaction ID
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

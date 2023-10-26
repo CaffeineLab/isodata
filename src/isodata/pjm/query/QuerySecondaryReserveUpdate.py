@@ -2,14 +2,7 @@
 below.
 
 
-To query for submitted update data use the following query request:
-<QueryRequest>
- <QuerySecondaryReserveUpdate day="yyyy-mm-dd">
- <All/>
- <LocationName>zzz</LocationName>
- <PortfolioName>zzz</PortfolioName>
- </QuerySynchReserveUpdate>
-</QueryRequest>
+To query for submitted update data
 
 
 """

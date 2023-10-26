@@ -1,14 +1,6 @@
 """QueryRegulationOffer - To query for submitted Regulation Offer data
 
 
-<QueryRequest>
- <QueryRegulationOffer day="yyyy-mm-dd">
- <All/>
- <LocationName>zzz</LocationName>
- <PortfolioName>zzz</PortfolioName>
- </QueryRegulationOffer>
-</QueryRequest>
-
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

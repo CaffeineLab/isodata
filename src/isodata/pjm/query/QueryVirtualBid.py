@@ -1,16 +1,7 @@
 """QueryVirtualBid - You may query for a particular effective day and bid locations using the message described
 below.
 To query the system for a submitted virtual bids of a one or more bid location nodes for a given
-day, the following QueryRequest is used:
-
-<QueryRequest>
- <QueryVirtualBid day="yyyy-mm-dd">
- <All/>
- <LocationName>zzz</LocationName>
- <PortfolioName>zzz</PortfolioName>
- </QueryVirtualBid>
-</QueryRequest>
-
+day,
 
 
 """

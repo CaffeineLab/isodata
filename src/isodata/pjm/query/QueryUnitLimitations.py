@@ -1,13 +1,5 @@
 """QueryUnitLimitations - You may query for a submitted unit limitation(s) using the message described below.
-To query for submitted Unit Limitation data the following QueryRequest is issued:
-
-<QueryRequest>
- <QueryUnitLimitations startDay="YYYY-MM-DD" endDay="YYYY-MM-DD">
- <All/>
- <LocationName>zzz</LocationName>
- <PortfolioName>zzz</PortfolioName>
- </QueryUnitLimitations>
-</QueryRequest>
+To query for submitted Unit Limitation data the following QueryRequest is issued
 
 """
 # pylint:disable=duplicate-code

@@ -1,4 +1,4 @@
-"""QueryOPCForecastedAllowance -
+"""QueryOPCForecastedAllowance - Undocumented
 """
 # pylint:disable=duplicate-code
 

@@ -1,12 +1,5 @@
 """QueryUnitRampRates -You may query for a submitted hourly ramp rate using the message described below.
-To query for submitted Unit Ramp Rate Hourly data the following QueryRequest is issued:
-
-<QueryRequest>
- <QueryUnitRampRates day="YYYY-MM-DD">
-  <All/>
- <LocationName>zzz</LocationName>
- </QueryFuelPriceExceptions>
-</QueryRequest>
+To query for submitted Unit Ramp Rate Hourly data
 
 """
 # pylint:disable=duplicate-code

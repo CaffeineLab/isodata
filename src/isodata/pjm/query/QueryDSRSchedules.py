@@ -3,11 +3,6 @@ below.
 To query the market for a single submitted schedule selection message for a given day
 
 
-<QueryRequest>
- <QueryDSRScheduleSelection location="xxx" schedule="xx" day="yyyy-mm-dd"/>
-</QueryRequest>
-
-
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

@@ -7,12 +7,6 @@ To query the market for a specific submitted schedule offers, issue the followin
 message:
 
 
-<QueryRequest>
- <QueryScheduleOffer location="xxx" schedule="xx" day="yyyy-mm-dd"/>
-</QueryRequest>
-
-
-
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

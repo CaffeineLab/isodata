@@ -1,13 +1,5 @@
 """QueryFuelPriceExceptions -You may query for a submitted unit fuel exception(s) using the message described below.
-To query for submitted Unit Fuel Exceptions data the following QueryRequest is issued:
-
-<QueryRequest>
- <QueryFuelPriceExceptions day="YYYY-MM-DD">
- <All/>
- <LocationName>zzz</LocationName>
- <PortfolioName>zzz</PortfolioName>
- </QueryFuelPriceExceptions>
-</QueryRequest>
+To query for submitted Unit Fuel Exceptions data
 
 """
 # pylint:disable=duplicate-code

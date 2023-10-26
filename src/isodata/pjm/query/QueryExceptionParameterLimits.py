@@ -1,21 +1,8 @@
 """QueryExceptionParameterLimits - You may query for a particular effective day and weather point using the message described
 below.
-To query the system for submitted exceptions for a given interval, the following QueryRequest is
-issued:
+To query the system for submitted exceptions for a given interval
 
-<QueryRequest>
- <QueryExceptionParameterLimits>
- <All/>
- <LocationName/>
- <PortfolioName/>
- <StartDate>yyyy-mm-dd</StartDate>
- <EndDate>yyyy-mm-dd</EndDate>
- <Status>zzz</Status>
- <RequestType>zzz</RequestType>
- </QueryExceptionParameterLimits>
-</QueryRequest>
-""""""QueryASBilaterals - This message is used to query for the latest known active subzone and reserve type to be
-cleared per hour for the given operating day. This is a public report."""
+"""
 # pylint:disable=duplicate-code
 from ...pjm import constants as C
 from dateutil.parser import parse

@@ -1,7 +1,4 @@
 """QueryDSRScheduleOfferUpdate - To query the system for schedule detail update
-<QueryRequest>
- <QueryDSRScheduleOfferUpdate location="string" schedule="string"
-day="yyyy-mm-dd"/>
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

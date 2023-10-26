@@ -1,12 +1,6 @@
 """QueryPRDHourly - You may query for the particular hourly values for a PRD
 
-<QueryRequest>
- <QueryPRDHourly day="yyyy-mm-dd">
- <All/>
- <LocationName>zzz</LocationName>
- <PortfolioName>zzz</PortfolioName>
- </QueryPRDHourly>
-</QueryRequest>
+
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

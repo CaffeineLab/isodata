@@ -1,10 +1,6 @@
 """QueryScheduleRestriction - You may query for the use of the cost schedule for a particular day and location using the
 message described below.
 To query the system for the use of the cost schedule,
-
-<QueryRequest>
-<QueryScheduleRestriction location="xyz" schedule="1" day="yyyy-mm-dd"/>
-</QueryRequest>
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

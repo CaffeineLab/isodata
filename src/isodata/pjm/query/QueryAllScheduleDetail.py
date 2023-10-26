@@ -1,15 +1,5 @@
 """QueryAllScheduleDetail - To request all schedules associated with a unit location or the locations of a portfolio, execute the
 following query request.
-<QueryRequest>
- <QueryAllScheduleDetail day="yyyy-mm-dd" available="xxx" >
- <All/>
- <LocationName>xxx</LocationName>
- <PortfolioName>xxx</PortfolioName>
- </QueryAllScheduleDetail>
-</QueryRequest>
-
-
-
 
 """
 # pylint:disable=duplicate-code

@@ -1,12 +1,5 @@
 """QueryUnitSchedules -You may query for all schedules associated with a given generator unit.
-To query for a submitted unit schedules data use the following query request:
-<QueryRequest>
- <QueryUnitSchedules>
- <All/>
- <LocationName>zzz</LocationName>
- <PortfolioName>zzz</PortfolioName>
- </QueryUnitSchedules>
-</QueryRequest>
+To query for a submitted unit schedules data
 
 
 """

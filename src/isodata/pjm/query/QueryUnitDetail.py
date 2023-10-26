@@ -1,14 +1,5 @@
 """QueryUnitDetail - You may query for a particular generator location using the message described below.
-To query for a submitted unit detail data use the following query request:
-
-
-<QueryRequest>
- <QueryUnitDetail day="yyyy-mm-dd">
- <All/>
- <LocationName>zzz</LocationName>
- <PortfolioName>zzz</PortfolioName>
- </QueryUnitDetail>
-</QueryRequest>
+To query for a submitted unit detail data
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

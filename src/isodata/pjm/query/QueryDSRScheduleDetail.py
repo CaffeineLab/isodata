@@ -1,8 +1,5 @@
 """QueryDSRScheduleDetail - You may query for a particular market day and generator by location name and specific schedule
 identifier
-<QueryRequest>
- <QueryDSRScheduleDetail location="xxx" schedule="xx" day="yyyy-mm-dd"/>
-</QueryRequest>
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

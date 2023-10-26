@@ -1,4 +1,4 @@
-"""QueryOPCOutages -
+"""QueryOPCOutages - Undocumented
 """
 # pylint:disable=duplicate-code
 

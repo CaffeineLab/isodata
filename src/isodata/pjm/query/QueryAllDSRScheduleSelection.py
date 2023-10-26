@@ -1,12 +1,4 @@
-"""QueryAllDSRScheduleSelection - To request all schedules associated with a load response location or the locations of a portfolio
-<QueryRequest>
- <QueryAllDSRScheduleSelection day="yyyy-mm-dd" available="xxx" >
- <All/>
- <LocationName>xxx</LocationName>
- <PortfolioName>xxx</PortfolioName>
- </QueryAllDSRScheduleSelection>
-</QueryRequest>
-"""
+"""QueryAllDSRScheduleSelection - To request all schedules associated with a load response location or the locations of a portfolio"""
 from ...pjm import constants as C
 from ...pjm.helper import gen_xml
 

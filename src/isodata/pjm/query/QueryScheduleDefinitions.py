@@ -1,7 +1,5 @@
 """QueryScheduleDefinitions - This message is used to query for schedule definitions
-<QueryRequest>
- <QueryScheduleDefintions/>
-</QueryRequest>
+
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

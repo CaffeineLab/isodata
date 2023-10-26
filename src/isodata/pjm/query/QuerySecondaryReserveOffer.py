@@ -1,13 +1,6 @@
 """QuerySecondaryReserveOffer - You may query for a particular market day and resource location using the message described
 below.
-To query for submitted offer data use the following query request:
-<QueryRequest>
- <QuerySecondaryReserveOffer day="yyyy-mm-dd">
- <All/>
- <LocationName>zzz</LocationName>
- <PortfolioName>zzz</PortfolioName>
- </QuerySecondaryReserveOffer>
-</QueryRequest>
+To query for submitted offer data
 
 
 """

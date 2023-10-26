@@ -1,4 +1,4 @@
-"""QueryOPCOpportunityCosts -
+"""QueryOPCOpportunityCosts - Undocumented
 """
 # pylint:disable=duplicate-code
 

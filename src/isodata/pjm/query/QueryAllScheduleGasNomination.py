@@ -1,5 +1,4 @@
-"""QueryAllScheduleGasNomination - Undocumented
-"""
+"""QueryAllScheduleGasNomination - Undocumented"""
 # pylint:disable=duplicate-code
 
 

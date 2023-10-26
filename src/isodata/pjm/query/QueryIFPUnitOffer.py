@@ -1,15 +1,5 @@
 """QueryIFPUnitOffer - To query submitted offer data
 
-<QueryRequest>
- <QueryIFPUnitOffer day="yyyy-mm-dd">
- <All/>
- </QueryIFPUnitOffer>
-</QueryRequest>
-<QueryRequest>
- <QueryIFPUnitOffer day="yyyy-mm-dd">
- <LocationName>zzz</LocationName>
- </QueryIFPUnitOffer>
-</QueryRequest>
 
 """
 # pylint:disable=duplicate-code

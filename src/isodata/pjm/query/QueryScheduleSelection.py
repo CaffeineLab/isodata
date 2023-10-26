@@ -1,8 +1,6 @@
 """QueryScheduleSelection - To query the market for a single submitted schedule selection message for a given day, the
 following QueryRequest is issued:
-<QueryRequest>
- <QueryScheduleSelection location="xxx" schedule="xx" day="yyyy-mm-dd"/>
-</QueryRequest>
+
 
 """
 # pylint:disable=duplicate-code

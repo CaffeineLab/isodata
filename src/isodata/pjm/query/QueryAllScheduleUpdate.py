@@ -1,12 +1,5 @@
 """QueryAllScheduleUpdate - To request all offer detail updates associated with a unit location or the locations of a portfolio,
 execute the following query request.
-<QueryRequest>
- <QueryAllScheduleUpdate day="yyyy-mm-dd" available="xxx">
- <All/>
- <LocationName>xxx</LocationName>
- <PortfolioName>xxx</PortfolioName>
- </QueryAllScheduleUpdate>
-</QueryRequest>
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

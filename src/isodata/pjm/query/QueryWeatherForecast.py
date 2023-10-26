@@ -1,14 +1,7 @@
 """QueryWeatherForecast - You may query for a particular effective day and weather point using the message described
 below.
 To query the system for a submitted weather forecast of a one or more weather points for a given
-day, the following QueryRequest is issued:
-
-
-<QueryRequest>
- <QueryWeatherForecast day="yyyy-mm-dd">
- <WeatherPointName>zzz</WeatherPointName>
- </QueryWeatherForecast>
-</QueryRequest>
+day
 """
 
 # pylint:disable=duplicate-code

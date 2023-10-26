@@ -1,4 +1,4 @@
-"""QueryOPCDeliveredFuel -
+"""QueryOPCDeliveredFuel - Undocumented
 """
 # pylint:disable=duplicate-code
 

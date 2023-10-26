@@ -1,12 +1,6 @@
 """QueryPRDResponseCurve - You may query for the particular response curve for a PRD
 
-<QueryRequest>
- <QueryPRDResponseCurve day="yyyy-mm-dd">
- <All/>
- <LocationName>zzz</LocationName>
- <PortfolioName>zzz</PortfolioName>
- </QueryPRDResponseCurve>
-</QueryRequest>
+
 
 """
 # pylint:disable=duplicate-code

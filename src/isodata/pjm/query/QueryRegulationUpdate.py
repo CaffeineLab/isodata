@@ -1,15 +1,7 @@
 """QueryRegulationUpdate - You may query for a particular effective day and generator unit location using the message
 described below.
 To query the market for a submitted Regulation Update data and receive all the hourly intervals
-submitted:
-
-<QueryRequest>
- <QueryRegulationUpdate day="yyyy-mm-dd">
- <All/>
- <LocationName>zzz</LocationName>
- <PortfolioName>zzz</PortfolioName>
- </QueryRegulationUpdate>
-</QueryRequest>
+submitted
 
 
 """

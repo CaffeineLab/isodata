@@ -1,15 +1,6 @@
 """QueryScheduleGasNomination - You may query the schedule gas nomination for a particular day and location and schedule using
 the message described below.
-To query the system for to see the schedule gas nomination data, the following QueryRequest is
-issued:
-
-
-
-<QueryRequest>
- <QueryScheduleGasNomination location="xyz" schedule="1" day="yyyy-mm-dd"/>
-</QueryRequest>
-
-
+To query the system for to see the schedule gas nomination data
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

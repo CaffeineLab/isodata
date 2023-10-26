@@ -1,8 +1,5 @@
 """QueryDSRScheduleSelection - To query the market for a single submitted schedule selection message for a given day
 
-<QueryRequest>
- <QueryDSRScheduleSelection location="xxx" schedule="xx" day="yyyy-mm-dd"/>
-</QueryRequest>
 
 
 """

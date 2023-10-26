@@ -1,4 +1,4 @@
-"""QueryOPCUnitParameters -
+"""QueryOPCUnitParameters - Undocumented
 """
 # pylint:disable=duplicate-code
 

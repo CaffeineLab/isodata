@@ -1,13 +1,6 @@
 """QueryUnitUpdate -You may query for a particular market day and generator location using the message described
 below.
-To query for a submitted unit update data use the following query request:
-<QueryRequest>
- <QueryUnitUpdate day="yyyy-mm-dd">
- <All/>
- <LocationName>zzz</LocationName>
- <PortfolioName>zzz</PortfolioName>
- </QueryUnitUpdate>
-</QueryRequest>
+To query for a submitted unit update data
 
 
 """

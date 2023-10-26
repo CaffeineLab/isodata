@@ -1,11 +1,4 @@
 """QueryScheduleSwitch - To query the system for schedule detail update, the following QueryRequest is issued:
-<QueryRequest>
- <QueryScheduleSwitch day="yyyy-mm-dd">
- <All/>
- <LocationName/>
- <PortfolioName/>
- </QueryScheduleSwitch>
-</QueryRequest>
 """
 # pylint:disable=duplicate-code
 from ...pjm import constants as C

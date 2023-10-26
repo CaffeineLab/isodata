@@ -1,15 +1,5 @@
 """QueryIFPAreaForecast - To query submitted area forecast hourly data
 
-<QueryRequest>
- <QueryIFPAreaForecast day="yyyy-mm-dd">
- <All/>
- </QueryIFPAreaForecast>
-</QueryRequest>
-<QueryRequest>
- <QueryIFPAreaForecast day="yyyy-mm-dd">
- <AreaName>zzz</AreaName>
- </QueryIFPAreaForecast>
-</QueryRequest>
 
 """
 # pylint:disable=duplicate-code
