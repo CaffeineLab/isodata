@@ -27,10 +27,12 @@ class PJMConnector(Connector):
             if 'access denied' in fault.text.lower():
                 logger.warning("'%s': %s" % (report, fault.text))
             else:
-                logger.error("'%s' Response returned the following error: %s" % (report, fault.text))
+                logger.error(report)
+                logger.error(fault.text)
 
         for fault in root.findall('.//{http://schemas.xmlsoap.org/soap/envelope/}faultstring'):
-            logger.error("'%s' Response returned the following client fault: %s" % (report, fault.text))
+            logger.error(report)
+            logger.error(fault.text)
 
         return issues if len(issues) > 0 else None
 
