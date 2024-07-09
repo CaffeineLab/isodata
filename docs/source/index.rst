@@ -7,6 +7,9 @@ Welcome to python-isodata's documentation!
 ==========================================
 A Python library to retrieve energy market information from the major US ISOs.
 
+Source: https://github.com/CaffeineLab/isodata
+
+
 Installation
 ------------
 
