@@ -70,13 +70,17 @@ class PJMConnector(Connector):
             module = import_module('..query.%s' % kwargs['report'], package=__name__)
             package = module.prepare(token=self.token, **kwargs)
         except ModuleNotFoundError as e:
+            logger.warning(f"[{kwargs['report']}] Skipping Request Execution")
             logger.error(e)
             return None
         except TypeError as e:
+            logger.warning(f"[{kwargs['report']}] Skipping Request Execution")
+            logger.warning(f"[{kwargs['report']}] Possible user supplied parameter not found")
             logger.error(e)
             return None
 
         if package is None:
+            logger.warning(f"[{kwargs['report']}] Nothing to submit")
             return None
 
         response = None
