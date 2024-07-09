@@ -71,3 +71,9 @@ the majority of pjm queries are just simple string builders with some simple tok
 replacements.  If you want/need to use LXML to create your request, there is an 
 example in pjm.query.QueryBidNodes
 
+## Additional Tools
+
+[Caffeine Lab](https://caffeinelab.com) will publish more tools for energy traders at:
+
+https://caffeinelab.com/mining-energy-data.html
+
