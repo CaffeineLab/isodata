@@ -28,6 +28,12 @@ Usage
    >>> pjm.authorize((username, password, (cert, key))
    >>> report = pjm.query(report='QueryPortfolios')
 
+Energy Trading Tools
+--------------------
+`Caffeine Lab <https://caffeinelab.com/>`_ will publish more tools for energy traders at:
+
+https://caffeinelab.com/mining-energy-data.html
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
