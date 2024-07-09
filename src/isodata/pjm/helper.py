@@ -37,7 +37,7 @@ def gen_xml(with_filters=False, **kwargs):
 
     if 'available' in kwargs:
         request = '<%s day="%s" available="%s">' % (kwargs['report'], kwargs['market_day'].strftime('%Y-%m-%d'), kwargs['available'])
-    elif 'disable_date' in kwargs:
+    elif 'disable_date' in kwargs and kwargs['disable_date'] is True:
         request = '<%s>' % kwargs['report']
     else:
         request = '<%s day="%s">' % (kwargs['report'], kwargs['market_day'].strftime('%Y-%m-%d'))

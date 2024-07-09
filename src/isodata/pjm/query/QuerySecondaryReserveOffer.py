@@ -12,7 +12,7 @@ from ...pjm.helper import gen_xml
 def prepare(token, **kwargs):
     """prepare and return all the components of the requests call."""
 
-    xml, content_length = gen_xml(with_filters="<All/>", disable_date=True, **kwargs)
+    xml, content_length = gen_xml(with_filters="<All/>", disable_date=False, **kwargs)
     return {
         'xml': xml,
         'headers': {
