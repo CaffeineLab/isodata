@@ -22,11 +22,23 @@ Your credential should look like this, and if required, your Certificate needs t
     {
       "username": "***USERNAME***",
       "password": "***PASSWORD***"
-    }
+    },    
+    "ercot_public_api":
+      {
+        "username": "***USERNAME***",
+        "password": "***PASSWORD***",
+        "primary_key": "***API_PRIMARY_KEY***",
+        "auth_url": "https://ercotb2c.b2clogin.com/ercotb2c.onmicrosoft.com/B2C_1_PUBAPI-ROPC-FLOW/oauth2/v2.0/token?username={username}&password={password}&grant_type=password&scope=openid+fec253ea-0d06-4272-a5e6-b478baeecd70+offline_access&client_id=fec253ea-0d06-4272-a5e6-b478baeecd70&response_type=id_token"
+      }
   }
 }
 ```
-## Querying
+
+ERCOT User Guide: 
+
+https://developer.ercot.com/applications/pubapi/user-guide/registration-and-authentication/
+
+## Querying PJM
 **market_day** is magical?
 
 If you pass it as a string it will be converted into a datetime and if you forget it
@@ -70,6 +82,38 @@ complicated libraries for submitting simple requests for reports.  Because of th
 the majority of pjm queries are just simple string builders with some simple token 
 replacements.  If you want/need to use LXML to create your request, there is an 
 example in pjm.query.QueryBidNodes
+
+## Querying ERCOT
+
+For a list of all Public Reports, refer to the ERCOT api-specs repo
+
+https://github.com/ercot/api-specs/blob/main/pubapi/pubapi-apim-api.json
+
+```
+from isodata.sessions import Session
+
+ercot = Session('ercot_public')
+ercot.authorize(username=creds['credentials']['ercot_public_api']['username'],
+                password=creds['credentials']['ercot_public_api']['password'],
+                primary_key=creds['credentials']['ercot_public_api']['primary_key'],
+                auth_url=creds['credentials']['ercot_public_api']['auth_url'])
+
+# Fetch 'SCED Shadow Prices and Binding Transmission Constraints'
+emil = 'NP6-86-CD'
+
+# Fetch the list of documents on the first page
+report_list, count = ercot.fetch_listing(emil_id=emil, page=0)
+
+# Fetch the first file and save it locally, the 2nd element
+# in the tuple is the link to the report.
+data_file = ercot.fetch_url(report_list[0][2], 'path/to/save/report')
+
+# Do what you want with the data in the file from here.
+# Beware of zips with multiple files, or data_files that 
+# are just plain .csv files.  An example for NP6-86-CD data is:
+df = pd.read_csv(data_file, compression='zip')
+
+```
 
 ## Additional Tools
 

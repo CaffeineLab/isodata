@@ -1,5 +1,6 @@
 from loguru import logger
 
+
 class Connector:
     token = None
     required = []
@@ -16,5 +17,6 @@ class Connector:
         try:
             self.token = self.get_token()
             logger.debug('Received a token of length %s characters.' % len(self.token))
-        except AttributeError:
+        except AttributeError as e:
+            logger.error(e)
             self.token = None
