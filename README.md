@@ -133,9 +133,15 @@ ercot = Session('ercot_public', loglevel='INFO')
 
 
 
-## Additional Tools
+## Additional Links and Tools
+
+[PyPi](https://pypi.org/project/python-isodata/0.0.16/) published for simple PIP installation.
 
 [Caffeine Lab](https://caffeinelab.com) will publish more tools for energy traders at:
 
 https://caffeinelab.com/mining-energy-data.html
+
+[Energy Market Montitor](https://energymarketmonitor.com) will publish some simple reports with data retrieved by python-isodata.
+
+[ERCOT Constraints](https://energymarketmonitor.com/constraints) will publish some simple reports with data retrieved by python-isodata.
 
