@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 HERE = pathlib.Path(__file__).parent
 
-VERSION = '0.0.16'
+VERSION = '0.0.17'
 PACKAGE_NAME = 'python-isodata'
 AUTHOR = 'Caffeine Lab, LLC.'
 AUTHOR_EMAIL = 'glenn@caffeinelab.com'
