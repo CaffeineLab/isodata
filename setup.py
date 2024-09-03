@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 HERE = pathlib.Path(__file__).parent
 
-VERSION = '0.0.14'
+VERSION = '0.0.17'
 PACKAGE_NAME = 'python-isodata'
 AUTHOR = 'Caffeine Lab, LLC.'
 AUTHOR_EMAIL = 'glenn@caffeinelab.com'
@@ -18,6 +18,7 @@ INSTALL_REQUIRES = [
       'loguru',
       'requests',
       'python-dateutil',
+      'tenacity',
       'lxml'
 ]
 

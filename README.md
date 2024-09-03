@@ -10,7 +10,6 @@ pip install python-isodata
 ```
 https://python-isodata.readthedocs.io/en/latest/
 
-
 ## Credentials
 Your credential should look like this, and if required, your Certificate needs to be supplied just as two file paths would be to a requests post or get.
 ```
@@ -85,6 +84,13 @@ example in pjm.query.QueryBidNodes
 
 ## Querying ERCOT
 
+Important - ERCOT throttles API usage, it is described as 30 API Calls per minute
+so you may find yourself with 4xx errors from the service and then stuck waiting out
+the time.  For simplicity, setting the throttle for 1 call per 2 seconds works well
+enough.  More aggressive strategies may gain a bit of performance.  Finally, the rate
+limit appears to be on the account, so be aware of this when pulling multiple reports,
+and yes, you probably can do what you are thinking to get around it.
+
 For a list of all Public Reports, refer to the ERCOT api-specs repo
 
 https://github.com/ercot/api-specs/blob/main/pubapi/pubapi-apim-api.json
@@ -102,7 +108,7 @@ ercot.authorize(username=creds['credentials']['ercot_public_api']['username'],
 emil = 'NP6-86-CD'
 
 # Fetch the list of documents on the first page
-report_list, count = ercot.fetch_listing(emil_id=emil, page=0)
+report_list, count = ercot.fetch_listing(emil_id=emil, page=1)
 
 # Fetch the first file and save it locally, the 2nd element
 # in the tuple is the link to the report.
@@ -115,9 +121,27 @@ df = pd.read_csv(data_file, compression='zip')
 
 ```
 
-## Additional Tools
+## Logging
+The session now supports a parameter for setting the log level.  The default is
+for no logging messages to be displayed.  Use the name of the log level to set the
+minimum level to display to stdout.
+
+```
+# Example stdout logging
+ercot = Session('ercot_public', loglevel='INFO')
+```
+
+
+
+## Additional Links and Tools
+
+[PyPi](https://pypi.org/project/python-isodata/0.0.16/) published for simple PIP installation.
 
 [Caffeine Lab](https://caffeinelab.com) will publish more tools for energy traders at:
 
 https://caffeinelab.com/mining-energy-data.html
+
+[Energy Market Montitor](https://energymarketmonitor.com) will publish some simple reports with data retrieved by python-isodata.
+
+[ERCOT Constraints](https://energymarketmonitor.com/constraints) will publish some simple reports with data retrieved by python-isodata.
 

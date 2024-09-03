@@ -60,24 +60,38 @@ class ERCOTPublicConnector(Connector):
         url = f"https://api.ercot.com/api/public-reports/archive/{emil_id}?download={doc_id}"
         return self.fetch_url(url, save_path)
 
-    def fetch_listing(self, emil_id, page=1):
+    def fetch_listing(self, emil_id, page=None):
         """Fetch download list for requested report."""
+
+        url = f"https://api.ercot.com/api/public-reports/archive/{emil_id}"
+
+        if page is not None:
+            assert page > 0, 'page must be greater than 0'
+            url += f"?page={page}"
 
         if self.token is None:
             self.token = self.get_token()
 
         results = []
-        url = f"https://api.ercot.com/api/public-reports/archive/{emil_id}?page={page}"
 
         try:
             response = requests.get(url, headers=self.headers(), timeout=10)
             response.raise_for_status()
+
         except HTTPError as err:
-            logger.error(err)
-            logger.error(response.text)
-            if response.status_code == 401:
+
+            if response.status_code == 400:
+                logger.error('Requested non-existent page.')
+                logger.error(err)
+
+            elif response.status_code == 401:
                 logger.error('Token expired?')
+                logger.error(err)
                 self.token = None
+            else:
+                logger.error(err)
+                logger.error(response.text)
+
             return results, 0
         except ReadTimeout as err:
             logger.error(err)

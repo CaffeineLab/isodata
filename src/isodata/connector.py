@@ -14,9 +14,9 @@ class Connector:
             except IndexError:
                 logger.error("Cannot authorize: Missing '[%s]' credential" % r)
 
-        try:
-            self.token = self.get_token()
+        self.token = self.get_token()
+
+        if self.token is None:
+            logger.error('No token retrieved')
+        else:
             logger.debug('Received a token of length %s characters.' % len(self.token))
-        except AttributeError as e:
-            logger.error(e)
-            self.token = None
