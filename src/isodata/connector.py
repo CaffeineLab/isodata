@@ -8,11 +8,16 @@ class Connector:
     def authorize(self, **kwargs):
         """Set all dynamic attributes."""
 
+        if len(self.required) == 0:
+            logger.warning("No requirments for connector?")
+
         for r in self.required:
             try:
                 setattr(self, r, kwargs[r])
             except IndexError:
-                logger.error("Cannot authorize: Missing '[%s]' credential" % r)
+                logger.error(f"Authorize: Missing '[{r}]' credential" % r)
+            except KeyError:
+                logger.error(f"Authorize: Required attribute not set: '{r}'")
 
         self.token = self.get_token()
 

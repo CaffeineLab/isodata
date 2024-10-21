@@ -1,9 +1,151 @@
 import requests
-from requests.exceptions import HTTPError, ReadTimeout
+from requests.exceptions import HTTPError, ReadTimeout, SSLError
 from loguru import logger
 from tenacity import retry, stop_after_attempt, wait_fixed
 from ..connector import Connector
 from ..utils import get_filename_from_headers
+
+
+class ERCOTPrivateConnector(Connector):
+    required = ['cert']
+
+    def __init__(self):
+        self.cert = None
+
+    def fetch_doc(self, document, save_path):
+        """Convert the document id into the URL for fetching the resource."""
+        url = f"https://mis.ercot.com/misdownload/servlets/mirDownload?doclookupId={document[0]}"
+        return self.fetch_url(url, save_path)
+
+    def fetch_url(self, url, save_path):
+        """Fetch the document resource (.zip/.csv/.???) and save it to the folder."""
+
+        if self.token is None:
+            logger.warning("Connector not authenticated to retrieve resource.")
+            return None
+
+        logger.info(f"Fetching: {url}")
+
+        response = None
+        try:
+            response = requests.get(
+                url,
+                cert=self.cert,
+                timeout=10)
+            response.raise_for_status()
+        except HTTPError as err:
+            logger.error(err)
+            if response.status_code == 403:
+                logger.error('No permission for this resource.')
+            return None
+        except ReadTimeout as err:
+            logger.error(err)
+            return None
+
+        # Save the file with the same filename as the source to the dest folder.
+        fname = get_filename_from_headers(response.headers)
+
+        if fname is None:
+            return None
+
+        out_file = save_path / fname
+
+        with open(out_file, 'wb') as f:
+            f.write(response.content)
+
+        return out_file
+
+
+    def fetch_listing(self, emil_id=None, report_type_id=None, page=None):
+        """Fetch download list for requested report."""
+
+
+        if report_type_id is not None:
+            url = f"https://mis.ercot.com/misapp/servlets/IceDocListJsonWS?reportTypeId={report_type_id}"
+        else:
+            url = f"https://mis.ercot.com/secure/data-products/markets/day-ahead-market?id={emil_id}"
+
+        if self.token is None:
+            logger.warning('No token - Cannot fetch url')
+            return None
+
+        # url = f"https://mis.ercot.com/secure/data-products/markets/day-ahead-market?id={emil_id}"
+
+        if page is not None:
+            assert page > 0, 'page must be greater than 0'
+            url += f"?page={page}"
+
+        results = []
+
+        try:
+            response = requests.get(
+                url=url,
+                timeout=10,
+                cert=self.cert
+            )
+            response.raise_for_status()
+
+        except HTTPError as err:
+
+            if response.status_code == 400:
+                logger.error('Requested non-existent page.')
+                logger.error(err)
+
+            elif response.status_code == 401:
+                logger.error('Token expired?')
+                logger.error(err)
+                self.token = None
+            else:
+                logger.error(err)
+                logger.error(response.text)
+
+            return results, 0
+
+        except SSLError as err:
+            logger.error(err)
+            logger.info('If authed, you should not see this error')
+            return None
+        except HTTPError as err:
+            logger.error(err)
+            logger.error(response.text)
+            return None
+        except ReadTimeout as err:
+            logger.error(err)
+            return None
+
+
+        if response.json().get('ListDocsByRptTypeRes') is None:
+            return results, 0
+
+        # Get the meta results from the call.  Record count, page count, etc.
+        meta = response.json().get('_meta')
+
+
+
+        for document in [x['Document'] for x in response.json()['ListDocsByRptTypeRes']['DocumentList']]:
+            results.append([
+                document['DocID'],
+                document['PublishDate'],
+                document['ConstructedName']
+            ])
+
+        return results, meta
+
+
+
+    def get_token(self):
+
+        # Verify that the cert and key file exist.
+        if self.cert[0].exists() is False:
+            logger.error("Supplied certificate path does not exist.")
+            return None
+
+        if self.cert[1].exists() is False:
+            logger.error("Supplied key path does not exist.")
+            return None
+
+
+        return 'working-ish'
 
 
 class ERCOTPublicConnector(Connector):

@@ -2,6 +2,7 @@
 import sys
 from loguru import logger
 from .ercot.connector import ERCOTPublicConnector
+from .ercot.connector import ERCOTPrivateConnector
 from .pjm.connector import PJMConnector
 
 
@@ -16,4 +17,6 @@ def Session(market, loglevel=None):
         return PJMConnector()
     if market.lower() == 'ercot_public':
         return ERCOTPublicConnector()
+    if market.lower() == 'ercot_private':
+        return ERCOTPrivateConnector()
     return None
