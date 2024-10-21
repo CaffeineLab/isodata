@@ -12,6 +12,8 @@ https://python-isodata.readthedocs.io/en/latest/
 
 ## Credentials
 Your credential should look like this, and if required, your Certificate needs to be supplied just as two file paths would be to a requests post or get.
+
+Important - do not change the ercot_public_api.auth_url.  
 ```
 {
   "user": "caffeinelab",
@@ -82,7 +84,7 @@ the majority of pjm queries are just simple string builders with some simple tok
 replacements.  If you want/need to use LXML to create your request, there is an 
 example in pjm.query.QueryBidNodes
 
-## Querying ERCOT
+## Querying ERCOT Public API
 
 Important - ERCOT throttles API usage, it is described as 30 API Calls per minute
 so you may find yourself with 4xx errors from the service and then stuck waiting out
@@ -120,6 +122,38 @@ data_file = ercot.fetch_url(report_list[0][2], 'path/to/save/report')
 df = pd.read_csv(data_file, compression='zip')
 
 ```
+
+
+
+## Querying ERCOT Private EMIL Documents
+
+Using a certificate to retrieve the ERCOT private reports starts with breaking
+the .pfx file into the discrete components for use with Python Requests Package.
+
+```
+openssl.exe pkcs12 -in your_account.pfx -clcerts -nokeys -out your_account.cert
+openssl.exe pkcs12 -in your_account.pfx -nocerts -out your_account.key
+```
+
+Once you have the two components, you'll pass them to the authorize function.
+Plenty of ways to secure your key, please don't expose it.
+
+```
+emil = "12335"
+
+# Make sure this folder exists, we'll create it in the future.
+out_box = f'/ercot_reports/{emil}'
+
+cert_file = '/ercot_reports/your_account.cert'
+key_file = '/ercot_reports/your_account.key'
+
+ercot = Session(market='ercot_private', loglevel="INFO")
+ercot.authorize(cert=(cert_file, key_file))
+data, meta = ercot.fetch_listing(report_type_id=emil)
+report = ercot.fetch_doc(data[0], out_box)
+```
+
+
 
 ## Logging
 The session now supports a parameter for setting the log level.  The default is
