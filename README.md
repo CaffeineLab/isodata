@@ -120,7 +120,22 @@ print(json.dumps(meta, indent=4))
 data_file = ercot.fetch_url(report_list[0][2], f'/documents/ercot/{emil}')
 ```
 
+Results should look similar to this:
+```
+NP6-86-CD Page 1 Returned 1000 documents
 
+{
+    "totalRecords": 103492,
+    "pageSize": 1000,
+    "totalPages": 104,
+    "currentPage": 1,
+    "query": {
+        "parameterCount": 0,
+        "parameters": {},
+        "sortedBy": "postDatetime: DESC"
+    }
+}
+```
 
 ## Querying ERCOT Private EMIL Documents
 

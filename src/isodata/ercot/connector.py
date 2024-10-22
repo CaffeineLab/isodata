@@ -92,16 +92,15 @@ class ERCOTPrivateConnector(ERCOTConnector):
         self.cert = ()
         super().__init__()
 
-    def fetch_doc(self, document, save_path):
+    def fetch_doc(self, doc_id, save_path):
         """Convert the document id into the URL for fetching the resource."""
-        url = f"https://mis.ercot.com/misdownload/servlets/mirDownload?doclookupId={document[0]}"
+        url = f"https://mis.ercot.com/misdownload/servlets/mirDownload?doclookupId={doc_id}"
         return self.fetch_url(url, save_path)
 
     def fetch_listing(self, report_type_id, page=None):
         """Fetch download list for requested report. Return a list of
         document tuples (docid, date, constructed_name) as well as any metadata
-        returned by the report. Include the metadata from the response if it is
-        included."""
+        returned by the report. """
 
         url = f"https://mis.ercot.com/misapp/servlets/IceDocListJsonWS?reportTypeId={report_type_id}"
 
@@ -136,7 +135,7 @@ class ERCOTPrivateConnector(ERCOTConnector):
             return None
 
         key = Path(self.cert[1])
-        if self.cert[1].exists() is False:
+        if key.exists() is False:
             logger.error("Supplied key path does not exist.")
             return None
 
@@ -165,7 +164,9 @@ class ERCOTPublicConnector(ERCOTConnector):
         return self.fetch_url(url, save_path)
 
     def fetch_listing(self, emil_id, page=None):
-        """Fetch download list for requested report."""
+        """Fetch download list for requested report. Return a list of
+        document tuples (docid, date, constructed_name) as well as any metadata
+        returned by the report. """
 
         url = f"https://api.ercot.com/api/public-reports/archive/{emil_id}"
 
@@ -185,6 +186,8 @@ class ERCOTPublicConnector(ERCOTConnector):
                         row['postDatetime'],
                         row['_links']['endpoint']['href']
                     ])
+        else:
+            logger.error("Invalid JSON response.")
 
         # Get the meta results from the call.  Record count, page count, etc.
         return results, response.json().get('_meta')
