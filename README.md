@@ -97,6 +97,11 @@ For a list of all Public Reports, refer to the ERCOT api-specs repo
 
 https://github.com/ercot/api-specs/blob/main/pubapi/pubapi-apim-api.json
 
+#### Important
+Unlike the private report, the public reports
+rely on the EMIL number which is a string
+identifier that looks similar to 'CCD-DD-CC'. 
+
 ```
 import json
 import os
@@ -149,20 +154,34 @@ openssl.exe pkcs12 -in your_account.pfx -nocerts -out your_account.key
 
 Once you have the two components, you'll pass them to the authorize function.
 Plenty of ways to secure your key, please don't expose it.
+For the example below, store the path to the files in the
+environment.  
+
+#### Important
+Unlike the public report, the private reports
+rely on the ReportTypeID which is a 5 digit
+numeric identifier.  
 
 ```
-emil = "12335"
+import os
+from isodata.sessions import Session
 
-# Make sure this folder exists, we'll create it in the future.
-out_box = f'/ercot_reports/{emil}'
+ercot = Session('ercot_private')
+ercot.authorize(cert=(os.getenv('ERCOT_PRIVATE_CERT_PATH'), os.getenv('ERCOT_PRIVATE_KEY_PATH')))
 
-cert_file = '/ercot_reports/your_account.cert'
-key_file = '/ercot_reports/your_account.key'
+# Retrieve the private report: DAM Shift Factors
+report_type_id = "13089"
+report_list, meta = ercot.fetch_listing(report_type_id=report_type_id)
+print(f'{report_type_id} Returned {len(report_list)} documents\n')
 
-ercot = Session(market='ercot_private', loglevel="INFO")
-ercot.authorize(cert=(cert_file, key_file))
-data, meta = ercot.fetch_listing(report_type_id=emil)
-report = ercot.fetch_doc(data[0], out_box)
+# Retrieve the first (most recent) file in the document list.
+data_file = ercot.fetch_doc(
+    doc_id=report_list[0][0],
+    save_path=f'/documents/ercot/{report_type_id}')
+
+print(data_file)
+
+
 ```
 
 
