@@ -11,7 +11,9 @@ def Session(market, loglevel=None):
     logger.remove()
 
     if loglevel is not None:
-        logger.add(sys.stderr, level=loglevel)
+        log_fmt = ("<green>{time:mm:ss}</green> | <level>{level: <8}</level> | "
+                   "<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>")
+        logger.add(sys.stderr, level=loglevel, format=log_fmt)
 
     if market.lower() == 'pjm':
         return PJMConnector()

@@ -1,70 +1,107 @@
+"""Provide support for retrieving document list and documents from
+the ERCOT public and private APIs"""
+
 from pathlib import Path
 import requests
 from requests.exceptions import HTTPError, ReadTimeout, SSLError
 from loguru import logger
-from tenacity import retry, stop_after_attempt, wait_fixed
 from ..connector import Connector
 from ..utils import get_filename_from_headers
 
 
-class ERCOTPrivateConnector(Connector):
+def save_to_path(contents, path, filename) -> Path:
+    """Write the contents of a downloaded file (binary) to
+    the given path/filename."""
+
+    path = Path(path)
+    outpath = path / filename
+
+    if outpath.exists():
+        logger.warning(f'Ovewriting file: {filename}')
+    elif path.exists() is False:
+        path.mkdir(parents=True, exist_ok=True)
+
+    with open(outpath, 'wb') as f:
+        f.write(contents)
+
+    logger.success(f'Saved {filename} to {path}')
+    return outpath
+
+
+class ERCOTConnector(Connector):
+
+    def __init__(self):
+        self.session = requests.Session()
+
+    def fetch(self, url):
+
+        logger.info(f"Fetching: {url}")
+
+        response = None
+
+        if self.token is None:
+            logger.warning('No token - Cannot fetch respource without token')
+            return response
+
+        try:
+            response = self.session.get(
+                url=url,
+                timeout=10
+            )
+            response.raise_for_status()
+
+        except HTTPError as err:
+            logger.error(err)
+            logger.error(response.json().get('message', 'Unspecified Message'))
+
+        except SSLError as err:
+            logger.error(err)
+        except ReadTimeout as err:
+            logger.error(err)
+
+        try:
+            if response.json().get('ResponseFaultList'):
+                for fault in response.json().get('ResponseFaultList'):
+                    logger.error(fault['ResponseFault']['FaultDescription'])
+        except requests.exceptions.JSONDecodeError:
+            # Not a JSON document.
+            pass
+
+        return response
+
+    def fetch_url(self, url, save_path):
+        """Fetch the document resource (.zip/.csv/.???) and save it to the
+        save_path folder.  Save the file with the same filename returned
+        in the response header."""
+
+        response = self.fetch(url)
+        fname = get_filename_from_headers(response.headers)
+        if fname is None:
+            print('No document received.')
+            logger.error("Expected file has no filename.")
+            raise FileNotFoundError
+        return save_to_path(response.content, save_path, fname)
+
+
+class ERCOTPrivateConnector(ERCOTConnector):
 
     required = ['cert']
 
     def __init__(self):
+
         self.cert = ()
+        super().__init__()
 
     def fetch_doc(self, document, save_path):
         """Convert the document id into the URL for fetching the resource."""
         url = f"https://mis.ercot.com/misdownload/servlets/mirDownload?doclookupId={document[0]}"
         return self.fetch_url(url, save_path)
 
-    def fetch_url(self, url, save_path):
-        """Fetch the document resource (.zip/.csv/.???) and save it to the folder."""
-
-        if self.token is None:
-            logger.warning("Connector not authenticated to retrieve resource.")
-            return None
-
-        logger.info(f"Fetching: {url}")
-
-        response = None
-        try:
-            response = requests.get(
-                url,
-                cert=self.cert,
-                timeout=10)
-            response.raise_for_status()
-        except HTTPError as err:
-            logger.error(err)
-            if response.status_code == 403:
-                logger.error('No permission for this resource.')
-            return None
-        except ReadTimeout as err:
-            logger.error(err)
-            return None
-
-        # Save the file with the same filename as the source to the dest folder.
-        fname = get_filename_from_headers(response.headers)
-
-        if fname is None:
-            return None
-
-        out_file = Path(save_path) / fname
-
-        with open(out_file, 'wb') as f:
-            f.write(response.content)
-
-        return out_file
-
     def fetch_listing(self, report_type_id, page=None):
         """Fetch download list for requested report. Return a list of
         document tuples (docid, date, constructed_name) as well as any metadata
-        returned by the report."""
-
-        if self.token is None:
-            logger.warning('No token - Cannot fetch listing without token')
-            return None
+        returned by the report. Include the metadata from the response if it is
+        included."""
 
         url = f"https://mis.ercot.com/misapp/servlets/IceDocListJsonWS?reportTypeId={report_type_id}"
 
@@ -72,47 +109,25 @@ class ERCOTPrivateConnector(Connector):
             assert page > 0, 'page must be greater than 0'
             url += f"?page={page}"
 
-        response = None
-
-        try:
-            response = requests.get(
-                url=url,
-                timeout=10,
-                cert=self.cert
-            )
-            response.raise_for_status()
-
-        except HTTPError as err:
-            logger.error(err)
-            logger.error(response.text)
-            return [], 0
-
-        except SSLError as err:
-            logger.error(err)
-            logger.info('If authed, then the tld may be invalid?')
-            return None
-        except ReadTimeout as err:
-            logger.error(err)
-            return None
-
-        if response.json().get('ListDocsByRptTypeRes') is None:
-            return [], 0
-
-        # Get the meta results from the call.  Record count, page count, etc.
-        meta = response.json().get('_meta')
-
         results = []
-        for document in [x['Document'] for x in response.json()['ListDocsByRptTypeRes']['DocumentList']]:
-            results.append([
-                document['DocID'],
-                document['PublishDate'],
-                document['ConstructedName']
-            ])
+        response = self.fetch(url)
 
-        return results, meta
+        if response.json().get('ListDocsByRptTypeRes'):
+            for document in [x['Document'] for x in response.json()['ListDocsByRptTypeRes']['DocumentList']]:
+                results.append([
+                    document['DocID'],
+                    document['PublishDate'],
+                    document['ConstructedName']
+                ])
+        else:
+            logger.error("Invalid JSON response.")
+
+        return results, response.json().get('_meta')
 
     def get_token(self):
-        """Just verify that we have a supplied certificate for now."""
+        """Just verify that we have a supplied certificate for now.
+        Kick any settings into the session at this point.
+        """
 
         cert = Path(self.cert[0])
         # Verify that the cert and key file exist.
@@ -127,12 +142,13 @@ class ERCOTPrivateConnector(Connector):
 
         # Just in case they passed in string values instead of path objects.
         self.cert = (cert, key)
+        self.session.cert = self.cert
 
         # We'll let the actual call determine whether they work or not.
         return 'working-ish'
 
 
-class ERCOTPublicConnector(Connector):
+class ERCOTPublicConnector(ERCOTConnector):
 
     required = ['username', 'password', 'primary_key', 'auth_url']
 
@@ -141,45 +157,7 @@ class ERCOTPublicConnector(Connector):
         self.password = None
         self.primary_key = None
         self.auth_url = None
-
-    def headers(self):
-        return {
-            "Authorization": "Bearer " + self.token,
-            "Ocp-Apim-Subscription-Key": self.primary_key
-        }
-
-    @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
-    def fetch_url(self, url, save_path):
-        """Fetch the document and save it to the path."""
-
-        if self.token is None:
-            self.token = self.get_token()
-
-        logger.info("Fetching URL from ERCOT")
-
-        try:
-            response = requests.get(url, headers=self.headers(), timeout=10)
-            response.raise_for_status()
-        except HTTPError as err:
-            logger.error(err)
-            logger.error(response.text)
-            if response.status_code == 401:
-                logger.error('Token expired?')
-                self.token = None
-            return None
-        except ReadTimeout as err:
-            logger.error(err)
-            return None
-
-        fname = get_filename_from_headers(response.headers)
-        if fname is None:
-            return None
-
-        out_file = Path(save_path) / fname
-        with open(out_file, 'wb') as f:
-            f.write(response.content)
-
-        return out_file
+        super().__init__()
 
     def fetch_emil_doc(self, emil_id, doc_id, save_path):
         """Generate URL and fetch the attached document."""
@@ -195,51 +173,26 @@ class ERCOTPublicConnector(Connector):
             assert page > 0, 'page must be greater than 0'
             url += f"?page={page}"
 
-        if self.token is None:
-            self.token = self.get_token()
-
         results = []
+        response = self.fetch(url)
 
-        try:
-            response = requests.get(url, headers=self.headers(), timeout=10)
-            response.raise_for_status()
+        if response.json().get('archives'):
 
-        except HTTPError as err:
-
-            if response.status_code == 400:
-                logger.error('Requested non-existent page.')
-                logger.error(err)
-
-            elif response.status_code == 401:
-                logger.error('Token expired?')
-                logger.error(err)
-                self.token = None
-            else:
-                logger.error(err)
-                logger.error(response.text)
-
-            return results, 0
-        except ReadTimeout as err:
-            logger.error(err)
-            return results, 0
-
-        if response.json().get('archives') is None:
-            return results, 0
+            if response.json().get('archives'):
+                for row in response.json().get('archives'):
+                    results.append([
+                        row['docId'],
+                        row['postDatetime'],
+                        row['_links']['endpoint']['href']
+                    ])
 
         # Get the meta results from the call.  Record count, page count, etc.
-        meta = response.json().get('_meta')
-
-        for row in response.json().get('archives'):
-            results.append([
-                row['docId'],
-                row['postDatetime'],
-                row['_links']['endpoint']['href']
-            ])
-
-        return results, meta['totalRecords']
+        return results, response.json().get('_meta')
 
     def get_token(self):
-        """Get the tokenId from the ERCOT Public API service"""
+        """Get the tokenId from the ERCOT Public API service.
+        Kick any settings into the session at this point.
+        """
 
         logger.info("Generating and Submitting Token Request for %s." % self.username)
         url = self.auth_url.format(username=self.username, password=self.password)
@@ -247,8 +200,14 @@ class ERCOTPublicConnector(Connector):
         try:
             response = requests.post(url=url, timeout=30)
             response.raise_for_status()
-            return response.json().get("access_token")
+            token = response.json().get("access_token")
         except HTTPError as e:
             logger.error(e)
+            return None
 
-        return None
+        self.session.headers = {
+            "Authorization": "Bearer " + token,
+            "Ocp-Apim-Subscription-Key": self.primary_key
+        }
+
+        return token

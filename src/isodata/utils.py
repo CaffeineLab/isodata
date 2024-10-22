@@ -18,7 +18,6 @@ def get_filename_from_headers(headers: dict) -> str:
         # probably not a dict
         logger.info(f"Key Error: {e}")
     except IndexError as e:
-        logger.info(e)
         logger.info("No Filename in content-disposition")
 
     return None

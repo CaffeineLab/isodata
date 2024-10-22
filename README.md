@@ -98,29 +98,26 @@ For a list of all Public Reports, refer to the ERCOT api-specs repo
 https://github.com/ercot/api-specs/blob/main/pubapi/pubapi-apim-api.json
 
 ```
-from isodata.sessions import Session
+import json
+import os
+from isodata.src.isodata.sessions import Session
 
 ercot = Session('ercot_public')
-ercot.authorize(username=creds['credentials']['ercot_public_api']['username'],
-                password=creds['credentials']['ercot_public_api']['password'],
-                primary_key=creds['credentials']['ercot_public_api']['primary_key'],
-                auth_url=creds['credentials']['ercot_public_api']['auth_url'])
+ercot.authorize(username=os.getenv('ERCOT_PUBLIC_USERNAME'),
+                password=os.getenv('ERCOT_PUBLIC_PASSWORD'),
+                primary_key=os.getenv('ERCOT_PUBLIC_PRIMARYKEY'),
+                auth_url=os.getenv('ERCOT_PUBLIC_AUTHURL'))
 
-# Fetch 'SCED Shadow Prices and Binding Transmission Constraints'
+# Retrieve the public report: SCED Shadow Prices and Binding Transmission Constraints
 emil = 'NP6-86-CD'
+page = 1
+report_list, meta = ercot.fetch_listing(emil_id=emil, page=page)
+print(f'{emil} Page {page} Returned {len(report_list)} documents\n')
+print(json.dumps(meta, indent=4))
 
-# Fetch the list of documents on the first page
-report_list, count = ercot.fetch_listing(emil_id=emil, page=1)
-
-# Fetch the first file and save it locally, the 2nd element
-# in the tuple is the link to the report.
-data_file = ercot.fetch_url(report_list[0][2], 'path/to/save/report')
-
-# Do what you want with the data in the file from here.
-# Beware of zips with multiple files, or data_files that 
-# are just plain .csv files.  An example for NP6-86-CD data is:
-df = pd.read_csv(data_file, compression='zip')
-
+# Retrieve the first (most recent) file in the document list.
+# Will raise a FileNotFound error if it cannot retrieve from ERCOT
+data_file = ercot.fetch_url(report_list[0][2], f'/documents/ercot/{emil}')
 ```
 
 
