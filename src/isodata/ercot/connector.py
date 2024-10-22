@@ -1,3 +1,4 @@
+from pathlib import Path
 import requests
 from requests.exceptions import HTTPError, ReadTimeout, SSLError
 from loguru import logger
@@ -7,10 +8,11 @@ from ..utils import get_filename_from_headers
 
 
 class ERCOTPrivateConnector(Connector):
+
     required = ['cert']
 
     def __init__(self):
-        self.cert = None
+        self.cert = ()
 
     def fetch_doc(self, document, save_path):
         """Convert the document id into the URL for fetching the resource."""
@@ -48,34 +50,29 @@ class ERCOTPrivateConnector(Connector):
         if fname is None:
             return None
 
-        out_file = save_path / fname
+        out_file = Path(save_path) / fname
 
         with open(out_file, 'wb') as f:
             f.write(response.content)
 
         return out_file
 
-
-    def fetch_listing(self, emil_id=None, report_type_id=None, page=None):
-        """Fetch download list for requested report."""
-
-
-        if report_type_id is not None:
-            url = f"https://mis.ercot.com/misapp/servlets/IceDocListJsonWS?reportTypeId={report_type_id}"
-        else:
-            url = f"https://mis.ercot.com/secure/data-products/markets/day-ahead-market?id={emil_id}"
+    def fetch_listing(self, report_type_id, page=None):
+        """Fetch download list for requested report. Return a list of
+        document tuples (docid, date, constructed_name) as well as any metadata
+        returned by the report."""
 
         if self.token is None:
-            logger.warning('No token - Cannot fetch url')
+            logger.warning('No token - Cannot fetch listing without token')
             return None
 
-        # url = f"https://mis.ercot.com/secure/data-products/markets/day-ahead-market?id={emil_id}"
+        url = f"https://mis.ercot.com/misapp/servlets/IceDocListJsonWS?reportTypeId={report_type_id}"
 
         if page is not None:
             assert page > 0, 'page must be greater than 0'
             url += f"?page={page}"
 
-        results = []
+        response = None
 
         try:
             response = requests.get(
@@ -86,42 +83,25 @@ class ERCOTPrivateConnector(Connector):
             response.raise_for_status()
 
         except HTTPError as err:
-
-            if response.status_code == 400:
-                logger.error('Requested non-existent page.')
-                logger.error(err)
-
-            elif response.status_code == 401:
-                logger.error('Token expired?')
-                logger.error(err)
-                self.token = None
-            else:
-                logger.error(err)
-                logger.error(response.text)
-
-            return results, 0
+            logger.error(err)
+            logger.error(response.text)
+            return [], 0
 
         except SSLError as err:
             logger.error(err)
-            logger.info('If authed, you should not see this error')
-            return None
-        except HTTPError as err:
-            logger.error(err)
-            logger.error(response.text)
+            logger.info('If authed, then the tld may be invalid?')
             return None
         except ReadTimeout as err:
             logger.error(err)
             return None
 
-
         if response.json().get('ListDocsByRptTypeRes') is None:
-            return results, 0
+            return [], 0
 
         # Get the meta results from the call.  Record count, page count, etc.
         meta = response.json().get('_meta')
 
-
-
+        results = []
         for document in [x['Document'] for x in response.json()['ListDocsByRptTypeRes']['DocumentList']]:
             results.append([
                 document['DocID'],
@@ -131,20 +111,24 @@ class ERCOTPrivateConnector(Connector):
 
         return results, meta
 
-
-
     def get_token(self):
+        """Just verify that we have a supplied certificate for now."""
 
+        cert = Path(self.cert[0])
         # Verify that the cert and key file exist.
-        if self.cert[0].exists() is False:
+        if cert.exists() is False:
             logger.error("Supplied certificate path does not exist.")
             return None
 
+        key = Path(self.cert[1])
         if self.cert[1].exists() is False:
             logger.error("Supplied key path does not exist.")
             return None
 
+        # Just in case they passed in string values instead of path objects.
+        self.cert = (cert, key)
 
+        # We'll let the actual call determine whether they work or not.
         return 'working-ish'
 
 
@@ -191,7 +175,7 @@ class ERCOTPublicConnector(Connector):
         if fname is None:
             return None
 
-        out_file = save_path / fname
+        out_file = Path(save_path) / fname
         with open(out_file, 'wb') as f:
             f.write(response.content)
 
